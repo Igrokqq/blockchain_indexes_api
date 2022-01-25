@@ -1,0 +1,57 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
+import { Transaction } from 'web3-eth';
+
+export default class BlockTransactionDto implements Transaction {
+  @ApiProperty()
+  @Expose()
+  readonly hash: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly nonce: number;
+
+  @ApiProperty()
+  @Expose()
+  readonly blockHash: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly blockNumber: number;
+
+  @ApiProperty()
+  @Expose()
+  readonly transactionIndex: number;
+
+  @ApiProperty()
+  @Expose()
+  readonly from: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly to: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly value: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly gasPrice: string;
+
+  @ApiProperty()
+  @Expose()
+  readonly maxPriorityFeePerGas?: string | number | import('bn.js');
+
+  @ApiProperty()
+  @Expose()
+  readonly maxFeePerGas?: string | number | import('bn.js');
+
+  @ApiProperty()
+  @Expose()
+  readonly gas: number;
+
+  @ApiProperty()
+  @Expose()
+  readonly input: string;
+}
