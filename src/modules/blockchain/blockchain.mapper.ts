@@ -7,18 +7,21 @@ export default class BlockchainMapper {
   static groupToDto(group: Record<string, any>): GroupDto {
     return plainToInstance(GroupDto, group, {
       excludeExtraneousValues: true,
+      exposeDefaultValues: true,
     });
   }
 
   static indexToDto(index: Record<string, any>): IndexDto {
     return plainToInstance(IndexDto, index, {
       excludeExtraneousValues: true,
+      exposeDefaultValues: true,
     });
   }
 
   static blockToDto(block: Record<string, any>): BlockDto {
     return plainToInstance(BlockDto, block, {
       excludeExtraneousValues: true,
+      exposeDefaultValues: true,
     });
   }
 }

@@ -13,19 +13,29 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "8.0.0",
     "@nestjs/config": "1.1.6",
+    "@nestjs/testing": "8.2.6",
     "@nestjs/core": "8.0.0",
     "@nestjs/platform-express": "8.0.0",
     "@nestjs/swagger": "5.2.0",
+    "@sentry/node": "6.17.2",
+    "@sentry/tracing": "6.17.2",
     "class-transformer": "0.5.1",
+    "express": "4.17.2",
     "module-alias": "2.2.2",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
     "rxjs": "7.2.0",
+    "supertest": "6.2.2",
     "swagger-ui-express": "4.3.0",
     "web3": "1.7.0",
     "web3-eth": "1.7.0",
@@ -39,6 +49,7 @@
     "@types/jest": "27.0.2",
     "@types/module-alias": "2.0.1",
     "@types/node": "16.0.0",
+    "@types/supertest": "2.0.11",
     "@typescript-eslint/eslint-plugin": "5.10.0",
     "@typescript-eslint/parser": "5.10.0",
     "eslint": "8.7.0",
@@ -59,13 +70,17 @@
     "@modules": "./dist/modules"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^@modules(.*)$": "<rootDir>/modules$1",
+      "^@common(.*)$": "<rootDir>/modules$1"
+    },
     "moduleFileExtensions": [
       "js",
       "json",
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
+    "testRegex": [".*\\.spec\\.ts$", ".*\\.e2e-spec\\.ts$"],
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },

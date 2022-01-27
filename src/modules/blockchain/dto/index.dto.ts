@@ -13,20 +13,20 @@ export default class IndexDto {
   @ApiProperty()
   @Expose()
   @Type(() => Number)
-  readonly ethPriceInWei: string = '';
+  readonly ethPriceInWei: number = 1;
 
   @ApiProperty()
   @Expose()
   @Type(() => Number)
-  readonly usdPriceInCents: string = '';
+  readonly usdPriceInCents: number = 1;
 
   @ApiProperty()
   @Expose()
   @Type(() => Number)
-  readonly usdCapitalization: string = '';
+  readonly usdCapitalization: number = 1;
 
   @ApiProperty()
   @Expose()
   @Type(() => Number)
-  readonly percentageChange: string = '';
+  readonly percentageChange: number = 1;
 }

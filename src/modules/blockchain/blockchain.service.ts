@@ -1,17 +1,12 @@
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import Web3Instance from 'web3';
-import { Block } from 'web3-eth';
-import {
-  BlockNotFoundError,
-  GroupNotFoundError,
-  IndexNotFoundError,
-} from '@modules/blockchain/blockchain.errors';
 import GroupDto from '@modules/blockchain/dto/group.dto';
 import BlockchainMapper from '@modules/blockchain/blockchain.mapper';
 import IndexDto from '@modules/blockchain/dto/index.dto';
+import BlockDto from './dto/block.dto';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Web3 = require('web3');
@@ -79,11 +74,11 @@ export default class BlockchainService implements OnModuleInit {
     ];
 
     this.web3 = new Web3(
-      this.configService.get<string>('insura.ropstenEndpoints.websockets', ''),
+      this.configService.get<string>('ROPSTEN_WEBSOCKETS_ENDPOINT', ''),
     );
     this.contract = new this.web3.eth.Contract(
       abi,
-      this.configService.get<string>('smartContractAddress', ''),
+      this.configService.get<string>('SMART_CONTRACT_ADDRESS', ''),
     );
   }
 
@@ -93,39 +88,22 @@ export default class BlockchainService implements OnModuleInit {
     return groupIds.map(Number);
   }
 
-  async getGroupById(id: number): Promise<GroupDto | GroupNotFoundError> {
-    try {
-      return BlockchainMapper.groupToDto(
-        await this.contract.methods.getGroup(id).call(),
-      );
-    } catch (error) {
-      Logger.error(error);
-      return new GroupNotFoundError();
-    }
+  async getGroupById(id: number): Promise<GroupDto> {
+    return BlockchainMapper.groupToDto(
+      await this.contract.methods.getGroup(id).call(),
+    );
   }
 
-  async getIndexById(id: number): Promise<IndexDto | IndexNotFoundError> {
-    try {
-      return BlockchainMapper.indexToDto({
-        ...(await this.contract.methods.getIndex(id).call()),
-        id,
-      });
-    } catch (error) {
-      Logger.error(error);
-      return new IndexNotFoundError();
-    }
+  async getIndexById(id: number): Promise<IndexDto> {
+    return BlockchainMapper.indexToDto({
+      ...(await this.contract.methods.getIndex(id).call()),
+      id,
+    });
   }
 
-  async getBlock(
-    blockHashOrBlockNumber: number | 'latest',
-  ): Promise<Block | BlockNotFoundError> {
-    try {
-      return BlockchainMapper.blockToDto(
-        await this.web3.eth.getBlock(blockHashOrBlockNumber),
-      );
-    } catch (error) {
-      Logger.error(error);
-      return new BlockNotFoundError();
-    }
+  async getBlock(blockHashOrBlockNumber: number | 'latest'): Promise<BlockDto> {
+    return BlockchainMapper.blockToDto(
+      await this.web3.eth.getBlock(blockHashOrBlockNumber),
+    );
   }
 }

@@ -1,10 +1,4 @@
-import {
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  ParseIntPipe,
-} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
 import BlockchainService from '@modules/blockchain/blockchain.service';
 import {
   ApiInternalServerErrorResponse,
@@ -13,11 +7,6 @@ import {
   ApiParam,
 } from '@nestjs/swagger';
 import GroupDto from '@modules/blockchain/dto/group.dto';
-import {
-  BlockNotFoundError,
-  GroupNotFoundError,
-  IndexNotFoundError,
-} from '@modules/blockchain/blockchain.errors';
 import IndexDto from '@modules/blockchain/dto/index.dto';
 import BlockDto from '@modules/blockchain/dto/block.dto';
 
@@ -35,32 +24,17 @@ export default class BlockchainController {
   @ApiOkResponse({ type: GroupDto })
   @ApiNotFoundResponse({ type: String })
   @Get('groups/:groupId')
-  async getGroup(
-    @Param('groupId', ParseIntPipe) groupId: number,
-  ): Promise<GroupDto | never> {
-    const groupOrError: GroupDto | GroupNotFoundError =
-      await this.blockchainService.getGroupById(groupId);
-
-    if (groupOrError instanceof GroupNotFoundError) {
-      throw new NotFoundException(groupOrError.message);
-    }
-
-    return groupOrError;
+  getGroup(@Param('groupId', ParseIntPipe) groupId: number): Promise<GroupDto> {
+    return this.blockchainService.getGroupById(groupId);
   }
 
   @ApiOkResponse({ type: IndexDto })
   @ApiNotFoundResponse({ type: String })
   @Get('indexes/:indexId')
-  async getIndex(
+  getIndex(
     @Param('indexId', ParseIntPipe) indexId: number,
   ): Promise<IndexDto | never> {
-    const indexOrError: IndexDto | IndexNotFoundError =
-      await this.blockchainService.getIndexById(indexId);
-
-    if (indexOrError instanceof IndexNotFoundError) {
-      throw new NotFoundException(indexOrError.message);
-    }
-    return indexOrError;
+    return this.blockchainService.getIndexById(indexId);
   }
 
   @ApiOkResponse({ type: BlockDto })
@@ -77,16 +51,7 @@ export default class BlockchainController {
     },
   })
   @Get('blocks/:blockId')
-  async getBlock(
-    @Param('blockId') blockId: number | 'latest',
-  ): Promise<BlockDto | never> {
-    const blockOrError: BlockDto | BlockNotFoundError =
-      await this.blockchainService.getBlock(blockId);
-
-    if (blockOrError instanceof BlockNotFoundError) {
-      throw new NotFoundException(blockOrError.message);
-    }
-
-    return blockOrError;
+  getBlock(@Param('blockId') blockId: number | 'latest'): Promise<BlockDto> {
+    return this.blockchainService.getBlock(blockId);
   }
 }

@@ -9,5 +9,5 @@ export default class GroupDto {
   @ApiProperty({ type: Number, isArray: true })
   @Expose()
   @Type(() => Number)
-  readonly indexes: number[];
+  readonly indexes: number[] = [];
 }

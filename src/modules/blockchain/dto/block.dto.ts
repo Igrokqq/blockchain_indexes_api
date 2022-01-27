@@ -1,5 +1,5 @@
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Block } from 'web3-eth';
 import BlockTransactionDto from '@modules/blockchain/dto/block-transaction.dto';
 
@@ -84,9 +84,11 @@ export default class BlockDto implements Block {
 
   @ApiProperty()
   @Expose()
-  readonly timestamp: string | number;
+  @Type(() => Number)
+  readonly timestamp: number;
 
   @ApiProperty()
   @Expose()
+  @Type(() => Number)
   readonly baseFeePerGas?: number;
 }

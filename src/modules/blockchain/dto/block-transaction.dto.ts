@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { Transaction } from 'web3-eth';
 
 export default class BlockTransactionDto implements Transaction {
@@ -37,18 +37,22 @@ export default class BlockTransactionDto implements Transaction {
 
   @ApiProperty()
   @Expose()
+  @Type(() => Number)
   readonly gasPrice: string;
 
   @ApiProperty()
   @Expose()
-  readonly maxPriorityFeePerGas?: string | number | import('bn.js');
+  @Type(() => Number)
+  readonly maxPriorityFeePerGas?: number;
 
   @ApiProperty()
   @Expose()
-  readonly maxFeePerGas?: string | number | import('bn.js');
+  @Type(() => Number)
+  readonly maxFeePerGas?: number;
 
   @ApiProperty()
   @Expose()
+  @Type(() => Number)
   readonly gas: number;
 
   @ApiProperty()

@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  blockchain_indexes_api:
+    container_name: blockchain_indexes_api
+    image: node:14-alpine
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+    command: sh -c "npm run start:dev"
